@@ -1,7 +1,18 @@
 import { useState } from 'react';
 
-// بيانات المنتجات
-const supplements = [
+interface Product {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  oldPrice: number;
+  image: string;
+  description: string;
+  rating: number;
+  badge: string;
+}
+
+const supplements: Product[] = [
   {
     id: 1,
     name: 'واي بروتين إيزولات',
@@ -48,7 +59,7 @@ const supplements = [
   },
 ];
 
-const equipment = [
+const equipment: Product[] = [
   {
     id: 5,
     name: 'حزام رفع أثقال',
@@ -95,7 +106,7 @@ const equipment = [
   },
 ];
 
-const allProducts = [...supplements, ...equipment];
+const allProducts: Product[] = [...supplements, ...equipment];
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -113,7 +124,7 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-function ProductCard({ product, onAddToCart }: { product: typeof allProducts[0]; onAddToCart: (p: typeof allProducts[0]) => void }) {
+function ProductCard({ product, onAddToCart }: { product: Product; onAddToCart: (p: Product) => void }) {
   return (
     <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group hover:-translate-y-1">
       <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 p-6 flex items-center justify-center h-48">
@@ -149,8 +160,8 @@ function ProductCard({ product, onAddToCart }: { product: typeof allProducts[0];
 }
 
 export default function App() {
-  const [activeCategory, setActiveCategory] = useState<'all' | 'مكملات' | 'تجهيزات'>('all');
-  const [cart, setCart] = useState<typeof allProducts>([]);
+  const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [cart, setCart] = useState<Product[]>([]);
   const [showCart, setShowCart] = useState(false);
   const [notification, setNotification] = useState('');
 
@@ -159,7 +170,7 @@ export default function App() {
       ? allProducts
       : allProducts.filter((p) => p.category === activeCategory);
 
-  const addToCart = (product: typeof allProducts[0]) => {
+  const addToCart = (product: Product) => {
     setCart([...cart, product]);
     setNotification(`تمت إضافة "${product.name}" إلى السلة`);
     setTimeout(() => setNotification(''), 2000);
@@ -172,10 +183,10 @@ export default function App() {
   const cartTotal = cart.reduce((sum, item) => sum + item.price, 0);
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
+    <div className="min-h-screen bg-gray-50">
       {/* Notification */}
       {notification && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg animate-bounce">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg">
           ✓ {notification}
         </div>
       )}
@@ -281,7 +292,7 @@ export default function App() {
               وإصرار
             </h2>
             <p className="text-gray-300 text-lg mt-6 leading-relaxed">
-              أفضل المكملات الغذائية والتجهيزات الرياضية بأعلى جودة وأفضل الأسعار. 
+              أفضل المكملات الغذائية والتجهيزات الرياضية بأعلى جودة وأفضل الأسعار.
               كل ما تحتاجه لتحقيق أهدافك الرياضية في مكان واحد.
             </p>
             <div className="flex flex-wrap gap-4 mt-8">
@@ -353,7 +364,7 @@ export default function App() {
             ].map((cat) => (
               <button
                 key={cat.key}
-                onClick={() => setActiveCategory(cat.key as typeof activeCategory)}
+                onClick={() => setActiveCategory(cat.key)}
                 className={`px-6 py-3 rounded-xl font-semibold transition-all ${
                   activeCategory === cat.key
                     ? 'bg-gradient-to-l from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/25'
@@ -384,12 +395,12 @@ export default function App() {
                 متجر <span className="text-orange-500">عزيمة</span> شريكك في الرحلة
               </h2>
               <p className="text-gray-600 mt-6 leading-relaxed">
-                نحن في متجر عزيمة نؤمن بأن كل شخص يستحق أن يصل لأفضل نسخة من نفسه. 
-                لذلك نوفر لك أفضل المكملات الغذائية المعتمدة عالمياً وأحدث التجهيزات الرياضية 
+                نحن في متجر عزيمة نؤمن بأن كل شخص يستحق أن يصل لأفضل نسخة من نفسه.
+                لذلك نوفر لك أفضل المكملات الغذائية المعتمدة عالمياً وأحدث التجهيزات الرياضية
                 بأسعار تنافسية وجودة لا تُضاهى.
               </p>
               <p className="text-gray-600 mt-4 leading-relaxed">
-                فريقنا من الخبراء الرياضيين مستعد لمساعدتك في اختيار المنتجات المناسبة 
+                فريقنا من الخبراء الرياضيين مستعد لمساعدتك في اختيار المنتجات المناسبة
                 لأهدافك سواء كنت مبتدئاً أو محترفاً.
               </p>
               <div className="flex gap-4 mt-8">
@@ -435,11 +446,11 @@ export default function App() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { icon: '📱', title: 'واتساب', info: '+966 50 123 4567', link: '#' },
-              { icon: '📧', title: 'البريد الإلكتروني', info: 'info@azima.store', link: '#' },
-              { icon: '📍', title: 'الموقع', info: 'الرياض، المملكة العربية السعودية', link: '#' },
+              { icon: '📱', title: 'واتساب', info: '+966 50 123 4567' },
+              { icon: '📧', title: 'البريد الإلكتروني', info: 'info@azima.store' },
+              { icon: '📍', title: 'الموقع', info: 'الرياض، المملكة العربية السعودية' },
             ].map((contact, i) => (
-              <div key={i} className="bg-gray-800 rounded-2xl p-6 text-center hover:bg-gray-750 transition-colors">
+              <div key={i} className="bg-gray-800 rounded-2xl p-6 text-center">
                 <span className="text-4xl">{contact.icon}</span>
                 <h3 className="font-bold text-lg mt-3">{contact.title}</h3>
                 <p className="text-gray-400 mt-2">{contact.info}</p>

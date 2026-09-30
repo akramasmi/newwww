@@ -4,345 +4,835 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عزيمة - متجر المكملات والتجهيزات الرياضية</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-</head>
-<body>
-    <div id="root"></div>
-    
-    <script type="text/babel">
-        const { useState } = React;
-
-        const allProducts = [
-            {
-                id: 1,
-                name: 'واي بروتين إيزولات',
-                category: 'مكملات',
-                price: 299,
-                oldPrice: 399,
-                image: '🥤',
-                description: 'بروتين نقي عالي الجودة لبناء العضلات',
-                rating: 4.8,
-                badge: 'الأكثر مبيعاً',
-            },
-            {
-                id: 2,
-                name: 'كرياتين مونوهيدرات',
-                category: 'مكملات',
-                price: 149,
-                oldPrice: 199,
-                image: '💪',
-                description: 'يزيد القوة والأداء الرياضي بنسبة 20%',
-                rating: 4.9,
-                badge: 'جديد',
-            },
-            {
-                id: 3,
-                name: 'بي سي إيه إيه',
-                category: 'مكملات',
-                price: 189,
-                oldPrice: 249,
-                image: '⚡',
-                description: 'أحماض أمينية أساسية لتعافي العضلات',
-                rating: 4.7,
-                badge: '',
-            },
-            {
-                id: 4,
-                name: 'بري وركاوت',
-                category: 'مكملات',
-                price: 179,
-                oldPrice: 229,
-                image: '🔥',
-                description: 'طاقة مركزة قبل التمرين',
-                rating: 4.6,
-                badge: 'عرض خاص',
-            },
-            {
-                id: 5,
-                name: 'حزام رفع أثقال',
-                category: 'تجهيزات',
-                price: 129,
-                oldPrice: 179,
-                image: '🏋️',
-                description: 'حزام جلد طبيعي لحماية الظهر',
-                rating: 4.8,
-                badge: '',
-            },
-            {
-                id: 6,
-                name: 'قفازات تدريب',
-                category: 'تجهيزات',
-                price: 79,
-                oldPrice: 99,
-                image: '🧤',
-                description: 'قفازات مبطنة لراحة اليدين',
-                rating: 4.5,
-                badge: 'الأكثر مبيعاً',
-            },
-            {
-                id: 7,
-                name: 'حبل قفز احترافي',
-                category: 'تجهيزات',
-                price: 59,
-                oldPrice: 89,
-                image: '🤸',
-                description: 'حبل قفز سريع للكارديو والإحماء',
-                rating: 4.4,
-                badge: '',
-            },
-            {
-                id: 8,
-                name: 'فوم رولر',
-                category: 'تجهيزات',
-                price: 99,
-                oldPrice: 139,
-                image: '🧘',
-                description: 'أسطوانة تدليك لاسترخاء العضلات',
-                rating: 4.7,
-                badge: 'جديد',
-            },
-        ];
-
-        function App() {
-            const [activeCategory, setActiveCategory] = useState('all');
-            const [cart, setCart] = useState([]);
-            const [showCart, setShowCart] = useState(false);
-
-            const filteredProducts =
-                activeCategory === 'all'
-                    ? allProducts
-                    : allProducts.filter((p) => p.category === activeCategory);
-
-            const addToCart = (product) => {
-                setCart([...cart, product]);
-            };
-
-            const removeFromCart = (index) => {
-                setCart(cart.filter((_, i) => i !== index));
-            };
-
-            const cartTotal = cart.reduce((sum, item) => sum + item.price, 0);
-
-            return (
-                <div className="min-h-screen bg-gray-50" dir="rtl">
-                    {/* Header */}
-                    <header className="bg-white shadow-sm sticky top-0 z-40">
-                        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
-                                    <span className="text-white text-xl font-bold">ع</span>
-                                </div>
-                                <div>
-                                    <h1 className="text-2xl font-black text-gray-900">عزيمة</h1>
-                                    <p className="text-xs text-gray-500 -mt-1">مكملات وتجهيزات رياضية</p>
-                                </div>
-                            </div>
-
-                            <button
-                                onClick={() => setShowCart(!showCart)}
-                                className="relative bg-orange-50 hover:bg-orange-100 text-orange-600 p-3 rounded-xl transition-colors"
-                            >
-                                <span className="text-xl">🛒</span>
-                                {cart.length > 0 && (
-                                    <span className="absolute -top-1 -left-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
-                                        {cart.length}
-                                    </span>
-                                )}
-                            </button>
-                        </div>
-                    </header>
-
-                    {/* Cart Sidebar */}
-                    {showCart && (
-                        <div className="fixed inset-0 z-50 flex">
-                            <div className="absolute inset-0 bg-black/50" onClick={() => setShowCart(false)}></div>
-                            <div className="relative mr-auto w-full max-w-md bg-white h-full overflow-y-auto shadow-2xl">
-                                <div className="p-6">
-                                    <div className="flex items-center justify-between mb-6">
-                                        <h2 className="text-xl font-bold text-gray-900">🛒 سلة المشتريات</h2>
-                                        <button onClick={() => setShowCart(false)} className="text-gray-400 hover:text-gray-600 text-2xl">✕</button>
-                                    </div>
-                                    {cart.length === 0 ? (
-                                        <div className="text-center py-12">
-                                            <span className="text-6xl">🛒</span>
-                                            <p className="text-gray-500 mt-4">السلة فارغة</p>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <div className="space-y-3">
-                                                {cart.map((item, index) => (
-                                                    <div key={index} className="flex items-center gap-3 bg-gray-50 p-3 rounded-xl">
-                                                        <span className="text-3xl">{item.image}</span>
-                                                        <div className="flex-1">
-                                                            <p className="font-semibold text-sm text-gray-800">{item.name}</p>
-                                                            <p className="text-orange-600 font-bold text-sm">{item.price} ر.س</p>
-                                                        </div>
-                                                        <button
-                                                            onClick={() => removeFromCart(index)}
-                                                            className="text-red-400 hover:text-red-600 text-lg"
-                                                        >
-                                                            ✕
-                                                        </button>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div className="border-t mt-6 pt-4">
-                                                <div className="flex justify-between items-center mb-4">
-                                                    <span className="text-gray-600 font-medium">المجموع:</span>
-                                                    <span className="text-2xl font-black text-gray-900">{cartTotal} ر.س</span>
-                                                </div>
-                                                <button className="w-full bg-gradient-to-l from-orange-500 to-red-500 text-white py-3 rounded-xl font-bold text-lg hover:from-orange-600 hover:to-red-600 transition-all">
-                                                    إتمام الشراء
-                                                </button>
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Hero Section */}
-                    <section className="relative overflow-hidden bg-gradient-to-bl from-gray-900 via-gray-800 to-black text-white">
-                        <div className="absolute inset-0 opacity-10">
-                            <div className="absolute top-10 right-10 w-72 h-72 bg-orange-500 rounded-full blur-3xl"></div>
-                            <div className="absolute bottom-10 left-10 w-96 h-96 bg-red-500 rounded-full blur-3xl"></div>
-                        </div>
-                        <div className="relative max-w-7xl mx-auto px-4 py-20 md:py-32">
-                            <div className="max-w-2xl">
-                                <span className="inline-block bg-orange-500/20 text-orange-400 text-sm font-semibold px-4 py-2 rounded-full mb-6 border border-orange-500/30">
-                                    🔥 خصومات تصل إلى 40%
-                                </span>
-                                <h2 className="text-4xl md:text-6xl font-black leading-tight">
-                                    ابنِ جسدك بـ
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-l from-orange-400 to-red-500"> عزيمة </span>
-                                    وإصرار
-                                </h2>
-                                <p className="text-gray-300 text-lg mt-6 leading-relaxed">
-                                    أفضل المكملات الغذائية والتجهيزات الرياضية بأعلى جودة وأفضل الأسعار.
-                                    كل ما تحتاجه لتحقيق أهدافك الرياضية في مكان واحد.
-                                </p>
-                                <div className="flex gap-8 mt-12">
-                                    <div>
-                                        <p className="text-3xl font-black text-orange-400">+500</p>
-                                        <p className="text-gray-400 text-sm">منتج متوفر</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-3xl font-black text-orange-400">+10K</p>
-                                        <p className="text-gray-400 text-sm">عميل سعيد</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-3xl font-black text-orange-400">24h</p>
-                                        <p className="text-gray-400 text-sm">توصيل سريع</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Products Section */}
-                    <section className="py-16">
-                        <div className="max-w-7xl mx-auto px-4">
-                            <div className="text-center mb-12">
-                                <h2 className="text-3xl md:text-4xl font-black text-gray-900">منتجاتنا</h2>
-                                <p className="text-gray-500 mt-3">اختر من بين أفضل المكملات والتجهيزات الرياضية</p>
-                            </div>
-
-                            <div className="flex justify-center gap-3 mb-10">
-                                {[
-                                    { key: 'all', label: 'الكل' },
-                                    { key: 'مكملات', label: '💊 مكملات غذائية' },
-                                    { key: 'تجهيزات', label: '🏋️ تجهيزات رياضية' },
-                                ].map((cat) => (
-                                    <button
-                                        key={cat.key}
-                                        onClick={() => setActiveCategory(cat.key)}
-                                        className={`px-6 py-3 rounded-xl font-semibold transition-all ${
-                                            activeCategory === cat.key
-                                                ? 'bg-gradient-to-l from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/25'
-                                                : 'bg-white text-gray-600 hover:bg-gray-100 border'
-                                        }`}
-                                    >
-                                        {cat.label}
-                                    </button>
-                                ))}
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                {filteredProducts.map((product) => (
-                                    <div key={product.id} className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group hover:-translate-y-1">
-                                        <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 p-6 flex items-center justify-center h-48">
-                                            <span className="text-7xl group-hover:scale-110 transition-transform duration-300">{product.image}</span>
-                                            {product.badge && (
-                                                <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                                                    {product.badge}
-                                                </span>
-                                            )}
-                                        </div>
-                                        <div className="p-5">
-                                            <span className="text-xs text-orange-600 font-semibold bg-orange-50 px-2 py-1 rounded-full">
-                                                {product.category}
-                                            </span>
-                                            <h3 className="text-lg font-bold text-gray-800 mt-3">{product.name}</h3>
-                                            <p className="text-sm text-gray-500 mt-1">{product.description}</p>
-                                            <div className="flex gap-0.5 mt-2" dir="ltr">
-                                                {[1, 2, 3, 4, 5].map((star) => (
-                                                    <span
-                                                        key={star}
-                                                        className={`text-sm ${star <= Math.round(product.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
-                                                    >
-                                                        ★
-                                                    </span>
-                                                ))}
-                                                <span className="text-xs text-gray-500 mr-1">({product.rating})</span>
-                                            </div>
-                                            <div className="flex items-center justify-between mt-4">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-xl font-bold text-gray-900">{product.price} ر.س</span>
-                                                    <span className="text-sm text-gray-400 line-through">{product.oldPrice} ر.س</span>
-                                                </div>
-                                                <button
-                                                    onClick={() => addToCart(product)}
-                                                    className="bg-gradient-to-l from-orange-500 to-red-500 text-white px-4 py-2 rounded-xl text-sm font-bold hover:from-orange-600 hover:to-red-600 transition-all duration-200 active:scale-95"
-                                                >
-                                                    أضف للسلة
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Footer */}
-                    <footer className="bg-black text-gray-400 py-8">
-                        <div className="max-w-7xl mx-auto px-4">
-                            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
-                                        <span className="text-white text-sm font-bold">ع</span>
-                                    </div>
-                                    <span className="font-bold text-white">عزيمة</span>
-                                </div>
-                                <p className="text-sm">© 2024 عزيمة. جميع الحقوق محفوظة</p>
-                                <div className="flex gap-4">
-                                    <a href="#" className="hover:text-orange-400 transition-colors">تويتر</a>
-                                    <a href="#" className="hover:text-orange-400 transition-colors">انستقرام</a>
-                                    <a href="#" className="hover:text-orange-400 transition-colors">سناب شات</a>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
-                </div>
-            );
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f9fafb;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f97316, #dc2626);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 900;
+            color: #1f2937;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: -4px;
+        }
+
+        .cart-btn {
+            position: relative;
+            background: #fff7ed;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+
+        .cart-btn:hover {
+            background: #ffedd5;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            background: #dc2626;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #000 100%);
+            color: white;
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            width: 300px;
+            height: 300px;
+            background: #f97316;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            width: 400px;
+            height: 400px;
+            background: #dc2626;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(249, 115, 22, 0.2);
+            color: #fb923c;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .hero h2 {
+            font-size: 56px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+        .hero h2 span {
+            background: linear-gradient(135deg, #fb923c, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #d1d5db;
+            margin-bottom: 32px;
+            line-height: 1.8;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 900;
+            color: #fb923c;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 64px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 900;
+            color: #1f2937;
+        }
+
+        .section-title p {
+            color: #6b7280;
+            margin-top: 12px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            color: #6b7280;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #f97316, #dc2626);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+            padding: 24px;
+            text-align: center;
+            position: relative;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image span {
+            font-size: 80px;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-image span {
+            transform: scale(1.1);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #dc2626;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            display: inline-block;
+            background: #fff7ed;
+            color: #ea580c;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-top: 12px;
+        }
+
+        .product-description {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .product-rating {
+            display: flex;
+            gap: 2px;
+            margin-top: 8px;
+            direction: ltr;
+        }
+
+        .star {
+            color: #fbbf24;
+            font-size: 14px;
+        }
+
+        .star.empty {
+            color: #d1d5db;
+        }
+
+        .rating-text {
+            font-size: 12px;
+            color: #6b7280;
+            margin-right: 4px;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .current-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .old-price {
+            font-size: 14px;
+            color: #9ca3af;
+            text-decoration: line-through;
+        }
+
+        .add-to-cart-btn {
+            background: linear-gradient(135deg, #f97316, #dc2626);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart-btn:hover {
+            background: linear-gradient(135deg, #ea580c, #b91c1c);
+            transform: scale(1.05);
+        }
+
+        .add-to-cart-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Cart Sidebar */
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            display: none;
+        }
+
+        .cart-overlay.active {
+            display: block;
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: white;
+            z-index: 201;
+            overflow-y: auto;
+            box-shadow: -4px 0 24px rgba(0,0,0,0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s;
+        }
+
+        .cart-sidebar.active {
+            transform: translateX(0);
+        }
+
+        .cart-header {
+            padding: 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h2 {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #9ca3af;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            padding: 24px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .cart-item-image {
+            font-size: 32px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1f2937;
+        }
+
+        .cart-item-price {
+            color: #ea580c;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: #f87171;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .cart-footer {
+            padding: 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .cart-total-label {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .cart-total-value {
+            font-size: 24px;
+            font-weight: 900;
+            color: #1f2937;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #f97316, #dc2626);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background: linear-gradient(135deg, #ea580c, #b91c1c);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 48px 24px;
+        }
+
+        .empty-cart-icon {
+            font-size: 64px;
+        }
+
+        .empty-cart-text {
+            color: #6b7280;
+            margin-top: 16px;
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            color: #9ca3af;
+            padding: 32px 20px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #f97316, #dc2626);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .footer-logo-text {
+            font-weight: bold;
+            color: white;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #fb923c;
+        }
+
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 36px;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-buttons {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">ع</div>
+                <div class="logo-text">
+                    <h1>عزيمة</h1>
+                    <p>مكملات وتجهيزات رياضية</p>
+                </div>
+            </div>
+            <button class="cart-btn" onclick="toggleCart()">
+                🛒
+                <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-badge">🔥 خصومات تصل إلى 40%</span>
+            <h2>ابنِ جسدك بـ <span>عزيمة</span> وإصرار</h2>
+            <p>أفضل المكملات الغذائية والتجهيزات الرياضية بأعلى جودة وأفضل الأسعار. كل ما تحتاجه لتحقيق أهدافك الرياضية في مكان واحد.</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">+500</div>
+                    <div class="stat-label">منتج متوفر</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">+10K</div>
+                    <div class="stat-label">عميل سعيد</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">24h</div>
+                    <div class="stat-label">توصيل سريع</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="section-title">
+            <h2>منتجاتنا</h2>
+            <p>اختر من بين أفضل المكملات والتجهيزات الرياضية</p>
+        </div>
+
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterProducts('all')">الكل</button>
+            <button class="filter-btn" onclick="filterProducts('مكملات')">💊 مكملات غذائية</button>
+            <button class="filter-btn" onclick="filterProducts('تجهيزات')">🏋️ تجهيزات رياضية</button>
+        </div>
+
+        <div class="products-grid" id="productsGrid"></div>
+    </section>
+
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>🛒 سلة المشتريات</h2>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter" style="display: none;">
+            <div class="cart-total">
+                <span class="cart-total-label">المجموع:</span>
+                <span class="cart-total-value" id="cartTotal">0 ر.س</span>
+            </div>
+            <button class="checkout-btn">إتمام الشراء</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="footer-logo-icon">ع</div>
+                <span class="footer-logo-text">عزيمة</span>
+            </div>
+            <p>© 2024 عزيمة. جميع الحقوق محفوظة</p>
+            <div class="footer-links">
+                <a href="#">تويتر</a>
+                <a href="#">انستقرام</a>
+                <a href="#">سناب شات</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const products = [
+            { id: 1, name: 'واي بروتين إيزولات', category: 'مكملات', price: 299, oldPrice: 399, image: '🥤', description: 'بروتين نقي عالي الجودة لبناء العضلات', rating: 4.8, badge: 'الأكثر مبيعاً' },
+            { id: 2, name: 'كرياتين مونوهيدرات', category: 'مكملات', price: 149, oldPrice: 199, image: '💪', description: 'يزيد القوة والأداء الرياضي بنسبة 20%', rating: 4.9, badge: 'جديد' },
+            { id: 3, name: 'بي سي إيه إيه', category: 'مكملات', price: 189, oldPrice: 249, image: '⚡', description: 'أحماض أمينية أساسية لتعافي العضلات', rating: 4.7, badge: '' },
+            { id: 4, name: 'بري وركاوت', category: 'مكملات', price: 179, oldPrice: 229, image: '🔥', description: 'طاقة مركزة قبل التمرين', rating: 4.6, badge: 'عرض خاص' },
+            { id: 5, name: 'حزام رفع أثقال', category: 'تجهيزات', price: 129, oldPrice: 179, image: '🏋️', description: 'حزام جلد طبيعي لحماية الظهر', rating: 4.8, badge: '' },
+            { id: 6, name: 'قفازات تدريب', category: 'تجهيزات', price: 79, oldPrice: 99, image: '🧤', description: 'قفازات مبطنة لراحة اليدين', rating: 4.5, badge: 'الأكثر مبيعاً' },
+            { id: 7, name: 'حبل قفز احترافي', category: 'تجهيزات', price: 59, oldPrice: 89, image: '🤸', description: 'حبل قفز سريع للكارديو والإحماء', rating: 4.4, badge: '' },
+            { id: 8, name: 'فوم رولر', category: 'تجهيزات', price: 99, oldPrice: 139, image: '🧘', description: 'أسطوانة تدليك لاسترخاء العضلات', rating: 4.7, badge: 'جديد' }
+        ];
+
+        let cart = [];
+        let currentFilter = 'all';
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
+            
+            grid.innerHTML = filtered.map(product => `
+                <div class="product-card">
+                    <div class="product-image">
+                        <span>${product.image}</span>
+                        ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">${product.category}</span>
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-rating">
+                            ${generateStars(product.rating)}
+                            <span class="rating-text">(${product.rating})</span>
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                <span class="current-price">${product.price} ر.س</span>
+                                <span class="old-price">${product.oldPrice} ر.س</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart(${product.id})">أضف للسلة</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function generateStars(rating) {
+            const rounded = Math.round(rating);
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += `<span class="star ${i > rounded ? 'empty' : ''}">★</span>`;
+            }
+            return stars;
+        }
+
+        function filterProducts(category) {
+            currentFilter = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProducts();
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            cart.push(product);
+            updateCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            const badge = document.getElementById('cartBadge');
+            const cartItems = document.getElementById('cartItems');
+            const cartFooter = document.getElementById('cartFooter');
+            const cartTotal = document.getElementById('cartTotal');
+
+            if (cart.length > 0) {
+                badge.style.display = 'flex';
+                badge.textContent = cart.length;
+                cartFooter.style.display = 'block';
+                
+                cartItems.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item">
+                        <span class="cart-item-image">${item.image}</span>
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${item.price} ر.س</div>
+                        </div>
+                        <button class="remove-item" onclick="removeFromCart(${index})">✕</button>
+                    </div>
+                `).join('');
+
+                const total = cart.reduce((sum, item) => sum + item.price, 0);
+                cartTotal.textContent = total + ' ر.س';
+            } else {
+                badge.style.display = 'none';
+                cartFooter.style.display = 'none';
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">🛒</div>
+                        <p class="empty-cart-text">السلة فارغة</p>
+                    </div>
+                `;
+            }
+        }
+
+        function toggleCart() {
+            const overlay = document.getElementById('cartOverlay');
+            const sidebar = document.getElementById('cartSidebar');
+            overlay.classList.toggle('active');
+            sidebar.classList.toggle('active');
+        }
+
+        // Initialize
+        renderProducts();
+        updateCart();
     </script>
 </body>
 </html>

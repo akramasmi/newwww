@@ -9,8 +9,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "allowImportingTsExtensions": true
+    "noEmit": true
   },
   "include": ["src"]
 }

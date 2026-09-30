@@ -184,14 +184,12 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Notification */}
       {notification && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg">
           ✓ {notification}
         </div>
       )}
 
-      {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -225,7 +223,6 @@ export default function App() {
         </div>
       </header>
 
-      {/* Cart Sidebar */}
       {showCart && (
         <div className="fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/50" onClick={() => setShowCart(false)}></div>
@@ -275,7 +272,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Hero Section */}
       <section id="home" className="relative overflow-hidden bg-gradient-to-bl from-gray-900 via-gray-800 to-black text-white">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 right-10 w-72 h-72 bg-orange-500 rounded-full blur-3xl"></div>
@@ -327,7 +323,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Features */}
       <section className="py-12 bg-white border-b">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -347,7 +342,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Products Section */}
       <section id="products" className="py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
@@ -355,7 +349,6 @@ export default function App() {
             <p className="text-gray-500 mt-3">اختر من بين أفضل المكملات والتجهيزات الرياضية</p>
           </div>
 
-          {/* Category Filter */}
           <div className="flex justify-center gap-3 mb-10">
             {[
               { key: 'all', label: 'الكل' },
@@ -376,7 +369,6 @@ export default function App() {
             ))}
           </div>
 
-          {/* Products Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
@@ -385,7 +377,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* About Section */}
       <section id="about" className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -437,7 +428,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Contact Section */}
       <section id="contact" className="py-16 bg-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
@@ -460,7 +450,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="bg-black text-gray-400 py-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
